@@ -1,30 +1,40 @@
 import random
 
-g = random.randint(0, 1000)
-n = random.randint(0, 1000)
+# Открытые ключи, которыми обладают Элис и Боб
+
+g = random.randint(0, 10000)
+n = random.randint(0, 10000)
 
 print("Public: \tg =", g)
 print("Public: \tn =", n)
 
-Alice_num = random.randint(0, 1000)
-Bob_num = random.randint(0, 1000)
+# Закрытые ключи, которыми обладают Элис и Боб
 
-print("Private: \tAlice's number =", Alice_num)
-print("Private: \tBob's number =", Bob_num)
+Alice_private_key = random.randint(0, 10000)
+Bob_private_key = random.randint(0, 10000)
 
-Alice_key1 = (g ** Alice_num) % n
-Bob_key1 = (g ** Bob_num) % n
+print("Private: \tAlice`s private key =", Alice_private_key)
+print("Private: \tBob`s private key =", Bob_private_key)
 
-print("Private: \tAlice's key1 =", Alice_key1)
-print("Private: \tBob's key1 =", Bob_key1)
+# Создание частичного шифровального ключа
 
-Alice_key_final = Bob_key1 ** Alice_num % n
-Bob_key_final = Alice_key1 ** Bob_num % n
+Alice_part_key = (g ** Alice_private_key) % n
+Bob_part_key = (g ** Bob_private_key) % n
+
+print("Private: \tAlice`s part key =", Alice_part_key)
+print("Private: \tBob's part key =", Bob_part_key)
+
+# Создание полного шифровального ключа
+
+Alice_key_final = Bob_part_key ** Alice_private_key % n
+Bob_key_final = Alice_part_key ** Bob_private_key % n
 
 print("Public: \tAlice's key final =", Alice_key_final)
 print("Public: \tBob's key final =", Bob_key_final)
 
+#Проверка на сходимость
+
 if Alice_key_final == Bob_key_final:
-    print("\t\t Success!")
+    print("\t\t Numbers converged")
 else:
-    print("Fail!")
+    print("Numbers didn`t converged")
